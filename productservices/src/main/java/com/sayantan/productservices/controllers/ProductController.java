@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/products")
@@ -21,8 +22,8 @@ public class ProductController {
     }
 
     @GetMapping("/")
-    public ArrayList<Product> getAllProducts(){
-        return new ArrayList<>();
+    public List<Product> getAllProducts(){
+        return productService.getAllProducts();
     }
 
     @GetMapping("/{id}")
@@ -49,6 +50,7 @@ public class ProductController {
         return new Product();
     }
 
+    // Delete a product
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(@PathVariable("id") Long id) {
         return new ResponseEntity<>(HttpStatus.OK);

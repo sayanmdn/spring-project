@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Service
 public class FakeStoreProductService implements ProductService {
 
@@ -19,12 +22,13 @@ public class FakeStoreProductService implements ProductService {
 
     private Product serialize(FakeStoreProductDto fakeStoreProduct){
         Product product = new Product();
-        product.setId(product.getId());
+        product.setId(fakeStoreProduct.getId());
         product.setTitle(fakeStoreProduct.getTitle());
-        product.setCategory(new Category());
         product.setPrice(fakeStoreProduct.getPrice());
         product.setDescription(fakeStoreProduct.getDescription());
         product.setImageUrl(fakeStoreProduct.getImage());
+
+        product.setCategory(new Category());
         product.getCategory().setName(fakeStoreProduct.getCategory());
 
         return product;
@@ -34,6 +38,24 @@ public class FakeStoreProductService implements ProductService {
         System.out.println("In product service");
         FakeStoreProductDto productDto = restTemplate.getForObject("https://fakestoreapi.com/products/" + id, FakeStoreProductDto.class);
         return serialize(productDto);
+    }
+
+    @Override
+    public List<Product> getAllProducts() {
+        FakeStoreProductDto[] response = restTemplate.getForObject(
+                "https://fakestoreapi.com/products",
+                FakeStoreProductDto[].class
+        );
+
+
+        List<Product> answer = new ArrayList<>();
+
+
+        for (FakeStoreProductDto dto: response) {
+            answer.add(serialize(dto));
+        }
+
+        return answer;
     }
 
 }
