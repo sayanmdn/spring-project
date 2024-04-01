@@ -4,14 +4,16 @@ import com.sayantan.productservices.dtos.FakeStoreProductDto;
 import com.sayantan.productservices.models.Category;
 import com.sayantan.productservices.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Primary
 @Service
-public class FakeStoreProductService implements ProductService {
+public abstract class FakeStoreProductService implements ProductService {
 
     private RestTemplate restTemplate;
 

@@ -1,14 +1,15 @@
 package com.sayantan.productservices.controllers;
 
+import com.sayantan.productservices.commons.AuthenticationCommons;
 import com.sayantan.productservices.models.Product;
-import com.sayantan.productservices.services.FakeStoreProductService;
 import com.sayantan.productservices.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -16,21 +17,43 @@ import java.util.List;
 public class ProductController {
     private final ProductService productService;
 
+    private RestTemplate restTemplate;
+
+    private AuthenticationCommons authenticationCommons;
+
+    @Autowired
+    public ProductController(@Qualifier("selfProductService") ProductService productService,
+                             RestTemplate restTemplate,
+                             AuthenticationCommons authorizationCommons) {
+        this.productService = productService;
+        this.restTemplate = restTemplate;
+        this.authenticationCommons = authorizationCommons;
+    }
+
+
     // Constructor injection
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping("/")
-    public List<Product> getAllProducts(){
-        return productService.getAllProducts();
+    public ResponseEntity<List<Product>> getAllProducts(){
+        return ResponseEntity.ok(productService.getAllProducts());
     }
 
     @GetMapping("/{id}")
-    public Product getProduct(@PathVariable("id") Long id){
+    public ResponseEntity<Product>  getProduct(@PathVariable("id") Long id){
         System.out.println("In product controller");
 
-        return productService.getSingleProduct(id);
+        try{
+            return new ResponseEntity<>(
+                    productService.getSingleProduct(id),
+                    HttpStatus.OK
+            );
+        } catch(Exception e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+
     }
 
     @PostMapping("/add")
