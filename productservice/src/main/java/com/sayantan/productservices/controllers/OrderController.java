@@ -146,15 +146,4 @@ public class OrderController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-
-    // ================== ORDER TRACKING ==================
-
-    /**
-     * Track order status and shipment
-     */
-    @GetMapping("/{orderId}/tracking")
-    public ResponseEntity<OrderTrackingDto> trackOrder(
-            @PathVariable Long orderId,
-            @RequestHeader("Authorization") String token) {
-
-        if (!auth
+}

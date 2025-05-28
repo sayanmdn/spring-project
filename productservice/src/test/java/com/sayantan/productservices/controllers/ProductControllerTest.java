@@ -10,11 +10,9 @@ import org.springframework.http.ResponseEntity;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest
@@ -53,7 +51,7 @@ class ProductControllerTest {
         }
 
         when(
-                productService.getAllProducts()
+                productService.getAllProducts(pageable)
         ).thenReturn(
                 prodctsToPass
         );

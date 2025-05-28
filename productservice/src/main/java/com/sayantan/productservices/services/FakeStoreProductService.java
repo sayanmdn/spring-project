@@ -5,6 +5,7 @@ import com.sayantan.productservices.models.Category;
 import com.sayantan.productservices.models.Product;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -43,7 +44,7 @@ public abstract class FakeStoreProductService implements ProductService {
     }
 
     @Override
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts(Pageable pageable) {
         FakeStoreProductDto[] response = restTemplate.getForObject(
                 "https://fakestoreapi.com/products",
                 FakeStoreProductDto[].class

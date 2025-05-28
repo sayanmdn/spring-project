@@ -60,7 +60,7 @@ public class ProductController {
                 Sort.by(sortBy).descending() : Sort.by(sortBy).ascending();
 
         Pageable pageable = PageRequest.of(page, size, sort);
-        Page<Product> products = productService.getAllProducts(pageable);
+        Page<Product> products = (Page<Product>) productService.getAllProducts(pageable);
 
         return ResponseEntity.ok(products);
     }
@@ -278,8 +278,8 @@ public class ProductController {
      * Update product inventory (Admin only)
      */
     @PatchMapping("/{id}/inventory")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<Product> updateInventory(
+    @com.sayantan.productservices.controllers.PreAuthorize("hasRole('ADMIN')")
+    public <InventoryUpdateDto> ResponseEntity<Product> updateInventory(
             @PathVariable Long id,
             @RequestBody InventoryUpdateDto inventoryDto,
             @RequestHeader("Authorization") String token) {

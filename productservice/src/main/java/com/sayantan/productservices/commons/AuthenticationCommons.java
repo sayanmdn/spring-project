@@ -12,7 +12,7 @@ public class AuthenticationCommons {
     public AuthenticationCommons() {
         this.restTemplate = new RestTemplate();
     }
-    public UserDto validateToken(String token) {
+    public boolean validateToken(String token) {
         ResponseEntity<UserDto> userDtoResponse = restTemplate.postForEntity("http://localhost:8081/users/validate/" + token, null, UserDto.class);
 
         if(userDtoResponse.getBody() == null){
